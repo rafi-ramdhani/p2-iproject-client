@@ -31,7 +31,9 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("getCollections");
+    if (localStorage.access_token) {
+      this.$store.dispatch("getCollections");
+    }
   },
 };
 </script>

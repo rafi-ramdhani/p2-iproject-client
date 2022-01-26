@@ -1,7 +1,33 @@
 <template>
   <div class="bg-black h-full bg-opacity-20 rounded-lg">
+    <!-- Start -->
+    <div
+      v-if="number === 0"
+      class="flex flex-col h-full justify-center items-center"
+    >
+      <div
+        @click.prevent="start"
+        class="
+          h-10
+          w-36
+          flex
+          justify-center
+          items-center
+          rounded-lg
+          cursor-pointer
+          opacity-80
+          hover:opacity-100
+          mb-5
+        "
+        style="background: #2d322e"
+      >
+        <p class="text-white">Start</p>
+      </div>
+      <p class="text-black font-semibold">Click start to begin!</p>
+    </div>
+
     <!-- Quiz 1 -->
-    <div v-if="number === 1" class="flex flex-col">
+    <div v-if="number === 1" class="flex flex-col h-full justify-between">
       <p class="m-3 text-xl font-semibold">{{ quizes[0].question }}</p>
       <div>
         <input
@@ -47,7 +73,7 @@
         />
         <label for="">{{ quizes[0].answers[3] }}</label>
       </div>
-      <div class="m-3 flex h-40 justify-end items-end">
+      <div class="m-3 flex flex-row-reverse h-40 justify-between items-end">
         <div
           @click.prevent="lock"
           class="
@@ -65,11 +91,24 @@
         >
           <p class="text-white">Lock Answer</p>
         </div>
+        <div
+          class="
+            h-14
+            w-14
+            rounded-full
+            bg-black
+            flex
+            justify-center
+            items-center
+          "
+        >
+          <p class="text-white">{{ count }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Quiz 2 -->
-    <div v-if="number === 2" class="flex flex-col">
+    <div v-if="number === 2" class="flex flex-col h-full justify-between">
       <p class="m-3 text-xl font-semibold">{{ quizes[1].question }}</p>
       <div>
         <input
@@ -115,7 +154,7 @@
         />
         <label for="">{{ quizes[1].answers[3] }}</label>
       </div>
-      <div class="m-3 flex h-40 justify-end items-end">
+      <div class="m-3 flex flex-row-reverse h-40 justify-between items-end">
         <div
           @click.prevent="lock"
           class="
@@ -133,11 +172,24 @@
         >
           <p class="text-white">Lock Answer</p>
         </div>
+        <div
+          class="
+            h-14
+            w-14
+            rounded-full
+            bg-black
+            flex
+            justify-center
+            items-center
+          "
+        >
+          <p class="text-white">{{ count }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Quiz 3 -->
-    <div v-if="number === 3" class="flex flex-col">
+    <div v-if="number === 3" class="flex flex-col h-full justify-between">
       <p class="m-3 text-xl font-semibold">{{ quizes[2].question }}</p>
       <div>
         <input
@@ -183,7 +235,7 @@
         />
         <label for="">{{ quizes[2].answers[3] }}</label>
       </div>
-      <div class="m-3 flex h-40 justify-end items-end">
+      <div class="m-3 flex flex-row-reverse h-40 justify-between items-end">
         <div
           @click.prevent="lock"
           class="
@@ -201,11 +253,24 @@
         >
           <p class="text-white">Lock Answer</p>
         </div>
+        <div
+          class="
+            h-14
+            w-14
+            rounded-full
+            bg-black
+            flex
+            justify-center
+            items-center
+          "
+        >
+          <p class="text-white">{{ count }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Quiz 4 -->
-    <div v-if="number === 4" class="flex flex-col">
+    <div v-if="number === 4" class="flex flex-col h-full justify-between">
       <p class="m-3 text-xl font-semibold">{{ quizes[3].question }}</p>
       <div>
         <input
@@ -251,7 +316,7 @@
         />
         <label for="">{{ quizes[3].answers[3] }}</label>
       </div>
-      <div class="m-3 flex h-40 justify-end items-end">
+      <div class="m-3 flex flex-row-reverse h-40 justify-between items-end">
         <div
           @click.prevent="lock"
           class="
@@ -269,11 +334,24 @@
         >
           <p class="text-white">Lock Answer</p>
         </div>
+        <div
+          class="
+            h-14
+            w-14
+            rounded-full
+            bg-black
+            flex
+            justify-center
+            items-center
+          "
+        >
+          <p class="text-white">{{ count }}</p>
+        </div>
       </div>
     </div>
 
     <!-- Quiz 5 -->
-    <div v-if="number === 5" class="flex flex-col">
+    <div v-if="number === 5" class="flex flex-col h-full justify-between">
       <p class="m-3 text-xl font-semibold">{{ quizes[4].question }}</p>
       <div>
         <input
@@ -319,7 +397,7 @@
         />
         <label for="">{{ quizes[4].answers[3] }}</label>
       </div>
-      <div class="m-3 flex h-40 justify-end items-end">
+      <div class="m-3 flex flex-row-reverse h-40 justify-between items-end">
         <div
           @click.prevent="finish"
           class="
@@ -337,6 +415,19 @@
         >
           <p class="text-white">Finish</p>
         </div>
+        <div
+          class="
+            h-14
+            w-14
+            rounded-full
+            bg-black
+            flex
+            justify-center
+            items-center
+          "
+        >
+          <p class="text-white">{{ count }}</p>
+        </div>
       </div>
     </div>
   </div>
@@ -353,6 +444,7 @@ export default {
       four: null,
       five: null,
       score: 0,
+      count: 0,
     };
   },
   computed: {
@@ -364,10 +456,23 @@ export default {
     },
   },
   methods: {
+    start() {
+      this.$store.commit("COMMIT_NUMBER");
+      this.count = 20;
+      let i = setInterval(() => {
+        this.count--;
+
+        if (this.count === 0) {
+          this.finish();
+          clearInterval(i);
+        }
+      }, 1000);
+    },
     lock() {
       this.$store.commit("COMMIT_NUMBER");
     },
     finish() {
+      this.count = 0;
       this.score = 0;
 
       if (this.one === this.quizes[0].correctAnswer) {
@@ -401,6 +506,13 @@ export default {
       if (this.quizes[0].difficulty === "hard") {
         this.score *= 3;
       }
+
+      this.$swal({
+        position: "top-end",
+        title: `You've earned "${this.score}" Gold`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
 
       this.$store.dispatch("earnPoints", this.score).then(() => {
         this.score = 0;

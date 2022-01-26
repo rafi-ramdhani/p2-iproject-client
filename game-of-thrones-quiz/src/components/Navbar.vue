@@ -90,6 +90,7 @@ export default {
   methods: {
     toHome() {
       this.$store.commit("COMMIT_QUIZ_FALSE");
+      this.$store.commit("COMMIT_RESET_NUMBER");
       this.$router
         .push({
           path: "/",
@@ -111,6 +112,13 @@ export default {
         .catch(() => {});
     },
     signOut() {
+      this.$swal({
+        position: "top-end",
+        icon: "success",
+        title: `Signed Out`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
       localStorage.clear();
       this.$store.commit("COMMIT_LOGOUT");
       this.$store.commit("COMMIT_EMPTY_QUIZES");

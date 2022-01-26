@@ -113,6 +113,44 @@
           <p>Hard</p>
         </div>
       </div>
+
+      <!-- Chat -->
+      <div
+        class="
+          flex flex-col
+          mt-5
+          items-center
+          bg-gray-200 bg-opacity-20
+          rounded-lg
+        "
+        style="height: 16.7em"
+      >
+        <div
+          class="
+            mt-3
+            bg-gray-100
+            w-11/12
+            h-5/6
+            overflow-y-scroll
+            flex flex-col
+            rounded-t-lg
+          "
+        >
+          <div class="flex flex-col mb-3 px-2">
+            <div class="text-sm font-semibold">Username</div>
+            <div class="text-xs">message</div>
+          </div>
+        </div>
+        <div class="w-full h-1/6 flex justify-end">
+          <input
+            v-model="chat"
+            @keyup.enter="sendMessage"
+            class="w-full bg-gray-200 rounded-b-lg px-3"
+            type="text"
+            placeholder="Chat with others here.."
+          />
+        </div>
+      </div>
     </div>
 
     <!-- Card Section -->
@@ -188,6 +226,11 @@
 import Quizes from "../components/Quizes.vue";
 export default {
   name: "GameBoard",
+  data() {
+    return {
+      chat: "",
+    };
+  },
   components: {
     Quizes,
   },
@@ -203,6 +246,10 @@ export default {
     },
   },
   methods: {
+    sendMessage() {
+      this.$store.dispatch("sendChat", this.chat);
+      this.chat = "";
+    },
     toStore() {
       this.$router
         .push({
@@ -220,6 +267,12 @@ export default {
     easy() {
       this.$store.commit("COMMIT_QUIZ");
       this.$store.dispatch("getQuizes", "easy");
+      this.$swal({
+        position: "top-end",
+        title: `Has entered an "easy" match`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
     medium() {
       this.$store.commit("COMMIT_QUIZ");

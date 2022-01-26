@@ -85,9 +85,11 @@ export default {
   },
   methods: {
     toSignUp() {
-      this.$router.push({
-        path: "/register",
-      });
+      this.$router
+        .push({
+          path: "/register",
+        })
+        .catch(() => {});
     },
     signIn() {
       this.$store
@@ -95,14 +97,31 @@ export default {
           username: this.username,
           password: this.password,
         })
-        .then(() => {
-          this.$router
-            .push({
-              path: "/",
-            })
-            .catch(() => {});
-        })
-        .catch(() => {});
+        .then((res) => {
+          if (res) {
+            this.$swal({
+              position: "top-end",
+              icon: "error",
+              title: res,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            this.$swal({
+              position: "top-end",
+              icon: "success",
+              title: "Signed In",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+
+            this.$router
+              .push({
+                path: "/",
+              })
+              .catch(() => {});
+          }
+        });
     },
   },
 };

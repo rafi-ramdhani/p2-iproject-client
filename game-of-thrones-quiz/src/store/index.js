@@ -1,8 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import VueSocketIOExt from 'vue-socket.io-extended';
+import { io } from 'socket.io-client';
+
+const socket = io('http://localhost:3000');
 
 Vue.use(Vuex)
+
+Vue.use(VueSocketIOExt, socket);
 
 export default new Vuex.Store({
   state: {
@@ -13,9 +19,14 @@ export default new Vuex.Store({
     user: {},
     quizes: [],
     quiz: false,
-    number: 1,
+    number: 0,
+    chats: [],
   },
   mutations: {
+    SOCKET_CHAT(state, payload) {
+      state.chats = payload
+    },
+
     // login
     COMMIT_LOGIN(state) {
       state.loggedIn = true
@@ -83,8 +94,8 @@ export default new Vuex.Store({
 
     // reset number state
     COMMIT_RESET_NUMBER(state) {
-      state.number = 1
-    }
+      state.number = 0
+    },
   },
   actions: {
     // Login
@@ -99,6 +110,7 @@ export default new Vuex.Store({
         context.commit("COMMIT_LOGIN")
       } catch (err) {
         console.log(err.response.data)
+        return err.response.data.message
       }
     },
 
@@ -114,6 +126,7 @@ export default new Vuex.Store({
         console.log(`Username with email ${response.data.email} has registered`)
       } catch (err) {
         console.log(err.response.data)
+        return err.response.data.message
       }
     },
 
@@ -210,7 +223,24 @@ export default new Vuex.Store({
       } catch (err) {
         console.log(err.response.data)
       }
-    }
+    },
+
+    // Listen Connect
+    socket_connect() {
+      console.log("connected", this._vm.$socket)
+    },
+
+    // Listen Disconnect
+    socket_disconnect() {
+      console.log("disconnect", this._vm.$socket)
+    },
+
+    sendChat(context, payload) {
+      this._vm.$socket.client.emit("sendChat", {
+        username: context.state.user.username,
+        message: payload.trim()
+      })
+    },
   },
   modules: {
   }
