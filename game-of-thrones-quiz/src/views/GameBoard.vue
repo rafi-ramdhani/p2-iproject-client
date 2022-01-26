@@ -36,9 +36,10 @@
 
       <!-- Menu -->
       <div
+        v-if="!quiz"
         class="
           flex flex-col
-          mt-24
+          mt-5
           items-center
           bg-gray-200 bg-opacity-20
           py-5
@@ -52,6 +53,7 @@
           Choose difficulty
         </p>
         <div
+          @click.prevent="easy"
           class="
             w-10/12
             h-10
@@ -71,6 +73,7 @@
           <p>Easy</p>
         </div>
         <div
+          @click.prevent="medium"
           class="
             w-10/12
             h-10
@@ -90,6 +93,7 @@
           <p>Medium</p>
         </div>
         <div
+          @click.prevent="hard"
           class="
             w-10/12
             h-10
@@ -111,8 +115,9 @@
       </div>
     </div>
 
-    <!-- Game Section -->
+    <!-- Card Section -->
     <div
+      v-if="!quiz"
       class="w-3/4 flex flex-col h-48 bg-gray-900 bg-opacity-20 p-5 rounded-xl"
       style="height: 45em"
     >
@@ -156,18 +161,45 @@
       </div>
       <router-view />
     </div>
+
+    <!-- Quiz Section -->
+    <div
+      v-if="quiz"
+      class="
+        w-3/4
+        flex flex-col
+        h-48
+        justify-center
+        items-center
+        bg-gray-900 bg-opacity-20
+        p-5
+        rounded-xl
+      "
+      style="height: 45em"
+    >
+      <div class="h-2/3 p-5 w-full bg-white rounded-lg">
+        <quizes />
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import Quizes from "../components/Quizes.vue";
 export default {
   name: "GameBoard",
+  components: {
+    Quizes,
+  },
   computed: {
     user() {
       return this.$store.state.user;
     },
     collections() {
       return this.$store.state.collections;
+    },
+    quiz() {
+      return this.$store.state.quiz;
     },
   },
   methods: {
@@ -185,10 +217,23 @@ export default {
         })
         .catch(() => {});
     },
+    easy() {
+      this.$store.commit("COMMIT_QUIZ");
+      this.$store.dispatch("getQuizes", "easy");
+    },
+    medium() {
+      this.$store.commit("COMMIT_QUIZ");
+      this.$store.dispatch("getQuizes", "medium");
+    },
+    hard() {
+      this.$store.commit("COMMIT_QUIZ");
+      this.$store.dispatch("getQuizes", "hard");
+    },
   },
   created() {
     if (localStorage.access_token) {
       this.$store.dispatch("getUser");
+      this.$store.dispatch("getCollections");
     }
   },
 };

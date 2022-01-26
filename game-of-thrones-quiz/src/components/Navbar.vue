@@ -2,7 +2,7 @@
   <div class="h-14 w-screen" style="background: #2d322e">
     <div class="h-14 w-9/12 mx-auto flex">
       <div class="h-14 w-1/2 flex items-center">
-        <div class="w-28 cursor-pointer object-cover">
+        <div @click.prevent="toHome" class="w-28 cursor-pointer object-cover">
           <img
             src="https://logos-download.com/wp-content/uploads/2016/09/Game_of_Thrones_logo_logotype_wordmark.png"
             alt=""
@@ -88,6 +88,14 @@ export default {
     },
   },
   methods: {
+    toHome() {
+      this.$store.commit("COMMIT_QUIZ_FALSE");
+      this.$router
+        .push({
+          path: "/",
+        })
+        .catch(() => {});
+    },
     toSignIn() {
       this.$router
         .push({
@@ -105,6 +113,12 @@ export default {
     signOut() {
       localStorage.clear();
       this.$store.commit("COMMIT_LOGOUT");
+      this.$store.commit("COMMIT_EMPTY_QUIZES");
+      this.$store.commit("COMMIT_EMPTY_USER");
+      this.$store.commit("COMMIT_EMPTY_COLLECTIONS");
+      this.$store.commit("COMMIT_QUIZ_FALSE");
+      this.$store.commit("COMMIT_RESET_NUMBER");
+      this.$store.commit("COMMIT_EMPTY_CHARACTERS");
       this.$router
         .push({
           path: "/login",

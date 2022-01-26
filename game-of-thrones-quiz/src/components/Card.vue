@@ -43,6 +43,7 @@
       </div>
     </div>
     <div
+      @click.prevent="buy(character.id)"
       v-if="page === '/store'"
       class="
         h-10
@@ -52,6 +53,7 @@
         flex
         justify-center
         items-center
+        cursor-pointer
       "
     >
       <p class="font-semibold">
@@ -68,6 +70,7 @@
         flex
         justify-center
         items-center
+        cursor-pointer
       "
     >
       <p class="font-semibold">Inspect <i class="fas fa-search"></i></p>
@@ -82,6 +85,16 @@ export default {
   computed: {
     page() {
       return this.$route.path;
+    },
+  },
+  methods: {
+    buy(characterId) {
+      this.$store.dispatch("buyCharacter", characterId);
+      this.$router
+        .push({
+          path: "/",
+        })
+        .catch(() => {});
     },
   },
 };

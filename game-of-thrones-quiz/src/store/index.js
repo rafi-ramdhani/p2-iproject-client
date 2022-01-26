@@ -10,7 +10,10 @@ export default new Vuex.Store({
     loggedIn: false,
     characters: [],
     collections: [],
-    user: {}
+    user: {},
+    quizes: [],
+    quiz: false,
+    number: 1,
   },
   mutations: {
     // login
@@ -28,14 +31,59 @@ export default new Vuex.Store({
       state.characters = payload
     },
 
+    // empty characters state
+    COMMIT_EMPTY_CHARACTERS(state) {
+      state.characters = []
+    },
+
     // fill collections state
     COMMIT_COLLECTIONS(state, payload) {
       state.collections = payload
     },
 
+    // empty collections state
+    COMMIT_EMPTY_COLLECTIONS(state) {
+      state.collections = []
+    },
+
     // fill user state
     COMMIT_USER(state, payload) {
       state.user = payload
+    },
+
+    // empty user state
+    COMMIT_EMPTY_USER(state) {
+      state.user = {}
+    },
+
+    // fill quizes state
+    COMMIT_QUIZES(state, payload) {
+      state.quizes = payload
+    },
+
+    // empty quizes state
+    COMMIT_EMPTY_QUIZES(state) {
+      state.quizes = []
+    },
+
+    // change quiz state to true
+    COMMIT_QUIZ(state) {
+      state.quiz = true
+    },
+
+    // change quiz state to false
+    COMMIT_QUIZ_FALSE(state) {
+      state.quiz = false
+    },
+
+    // increment number state
+    COMMIT_NUMBER(state) {
+      state.number++
+    },
+
+    // reset number state
+    COMMIT_RESET_NUMBER(state) {
+      state.number = 1
     }
   },
   actions: {
@@ -109,6 +157,56 @@ export default new Vuex.Store({
         })
 
         context.commit("COMMIT_USER", response.data)
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    },
+
+    // Get quizes
+    async getQuizes(context, payload) {
+      try {
+        const response = await axios.get(`${context.state.url}/quizes`, {
+          headers: {
+            access_token: localStorage.access_token
+          },
+          params: {
+            difficulty: payload
+          }
+        })
+
+        context.commit("COMMIT_QUIZES", response.data)
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    },
+
+    // User earn points
+    async earnPoints(context, payload) {
+      try {
+        await axios.patch(`${context.state.url}/users-earned`, {
+          earnedPoints: payload
+        }, {
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+
+        context.dispatch("getUser")
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    },
+
+    // Buy character
+    async buyCharacter(context, payload) {
+      try {
+        await axios.post(`${context.state.url}/collections/${payload}`, {}, {
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+
+        context.dispatch("getUser")
       } catch (err) {
         console.log(err.response.data)
       }
