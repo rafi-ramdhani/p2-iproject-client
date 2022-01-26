@@ -9,6 +9,7 @@
       flex flex-col
       justify-center
       items-center
+      hover:shadow-2xl
     "
     style="background: #2d322e"
   >
@@ -54,27 +55,31 @@
         justify-center
         items-center
         cursor-pointer
+        hover:bg-yellow-500
       "
     >
       <p class="font-semibold">
         {{ character.price }} <i class="fas fa-coins"></i>
       </p>
     </div>
-    <div
-      v-if="page === '/'"
-      class="
-        h-10
-        w-full
-        rounded-b-lg
-        bg-gray-200
-        flex
-        justify-center
-        items-center
-        cursor-pointer
-      "
-    >
-      <p class="font-semibold">Inspect <i class="fas fa-search"></i></p>
-    </div>
+    <a class="w-full" target="_blank" :href="character.imageUrl">
+      <div
+        v-if="page === '/'"
+        class="
+          h-10
+          w-full
+          rounded-b-lg
+          bg-gray-200
+          flex
+          justify-center
+          items-center
+          cursor-pointer
+          hover:bg-gray-300
+        "
+      >
+        <p class="font-semibold">Inspect <i class="fas fa-search"></i></p>
+      </div>
+    </a>
   </div>
 </template>
 
@@ -93,6 +98,14 @@ export default {
       this.$router
         .push({
           path: "/",
+        })
+        .then(() => {
+          this.$swal({
+            position: "top-end",
+            title: `"${this.character.fullName}" has been added to collections`,
+            showConfirmButton: false,
+            timer: 2000,
+          });
         })
         .catch(() => {});
     },

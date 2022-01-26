@@ -103,10 +103,28 @@ export default {
           email: this.email,
           password: this.password,
         })
-        .then(() => {
-          this.$router.push({
-            path: "/login",
-          });
+        .then((res) => {
+          if (res) {
+            this.$swal({
+              position: "top-end",
+              icon: "error",
+              title: res,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            this.$swal({
+              position: "top-end",
+              icon: "success",
+              title: "Signed Up",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+
+            this.$router.push({
+              path: "/login",
+            });
+          }
         })
         .catch(() => {});
     },
