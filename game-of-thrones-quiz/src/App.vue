@@ -7,6 +7,8 @@
 
 <script>
 import Navbar from "./components/Navbar.vue";
+import "./sdk.js";
+
 export default {
   components: { Navbar },
   name: "App",

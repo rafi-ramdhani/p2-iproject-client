@@ -137,8 +137,18 @@
           "
         >
           <div class="flex flex-col mb-3 px-2">
-            <div class="text-sm font-semibold">Username</div>
-            <div class="text-xs">message</div>
+            <div
+              v-for="(chat, index) in chats"
+              :key="chat + index"
+              :class="[
+                chat.username === user.username ? 'text-right' : 'text-left',
+              ]"
+            >
+              <div class="text-sm font-semibold">
+                {{ chat.username }}
+              </div>
+              <div class="text-xs">{{ chat.message }}</div>
+            </div>
           </div>
         </div>
         <div class="w-full h-1/6 flex justify-end">
@@ -244,6 +254,9 @@ export default {
     quiz() {
       return this.$store.state.quiz;
     },
+    chats() {
+      return this.$store.state.chats;
+    },
   },
   methods: {
     sendMessage() {
@@ -269,7 +282,7 @@ export default {
       this.$store.dispatch("getQuizes", "easy");
       this.$swal({
         position: "top-end",
-        title: `Has entered an "easy" match`,
+        title: `Entered EASY match!`,
         showConfirmButton: false,
         timer: 2000,
       });
@@ -277,16 +290,32 @@ export default {
     medium() {
       this.$store.commit("COMMIT_QUIZ");
       this.$store.dispatch("getQuizes", "medium");
+      this.$swal({
+        position: "top-end",
+        title: `Entered  MEDIUM match!!`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
     hard() {
       this.$store.commit("COMMIT_QUIZ");
       this.$store.dispatch("getQuizes", "hard");
+      this.$swal({
+        position: "top-end",
+        title: `Entered HARD match!!!`,
+        showConfirmButton: false,
+        timer: 2000,
+      });
     },
   },
   created() {
     if (localStorage.access_token) {
       this.$store.dispatch("getUser");
       this.$store.dispatch("getCollections");
+      this.$store.dispatch("getAPOD");
+      this.$socket.$subscribe("chat", (payload) => {
+        this.$store.commit("SOCKET_CHAT", payload);
+      });
     }
   },
 };

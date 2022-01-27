@@ -53,21 +53,6 @@
           Sign Up
         </button>
       </form>
-      <button
-        class="
-          w-10/12
-          h-12
-          mt-1
-          mb-5
-          rounded-lg
-          opacity-90
-          hover:opacity-100
-          font-semibold
-        "
-        style="background-color: #a13333"
-      >
-        Facebook Sign In
-      </button>
       <p>
         Already have an account?
         <span

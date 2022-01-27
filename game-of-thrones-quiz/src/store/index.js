@@ -21,6 +21,7 @@ export default new Vuex.Store({
     quiz: false,
     number: 0,
     chats: [],
+    apod: {}
   },
   mutations: {
     SOCKET_CHAT(state, payload) {
@@ -96,6 +97,11 @@ export default new Vuex.Store({
     COMMIT_RESET_NUMBER(state) {
       state.number = 0
     },
+
+    // fill APOD
+    COMMIT_APOD(state, payload) {
+      state.apod = payload
+    }
   },
   actions: {
     // Login
@@ -220,6 +226,20 @@ export default new Vuex.Store({
         })
 
         context.dispatch("getUser")
+      } catch (err) {
+        console.log(err.response.data)
+      }
+    },
+
+    async getAPOD(context) {
+      try {
+        const response = await axios.get(`${context.state.url}/APOD`, {
+          headers: {
+            access_token: localStorage.access_token
+          }
+        })
+
+        context.commit("COMMIT_APOD", response.data)
       } catch (err) {
         console.log(err.response.data)
       }

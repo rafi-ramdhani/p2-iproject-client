@@ -24,7 +24,6 @@
       class="
         flex flex-col
         justify-between
-        border-t-4
         bg-gray-200 bg-opacity-80
         w-full
         h-24
