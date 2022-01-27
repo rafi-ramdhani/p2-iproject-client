@@ -21,7 +21,7 @@
         </p>
       </div>
 
-      <!-- Content Image --->
+      <!--- Content Image --->
       <div
         class="w-11/12 rounded-lg mt-12 border-4"
         :style="`background-image: url('${image}')`"
