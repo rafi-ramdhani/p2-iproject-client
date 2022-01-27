@@ -24,10 +24,10 @@
       <!-- Content Image -->
       <div
         class="w-11/12 rounded-lg mt-12 border-4"
+        :style="`background-image: url('${image}')`"
         style="
           height: 35em;
           border-color: #2d322e;
-          background-image: url('https://images3.alphacoders.com/710/thumbbig-710804.webp');
           background-position: center;
           background-repeat: no-repeat;
           background-size: cover;
@@ -43,6 +43,14 @@
 <script>
 export default {
   name: "LoginRegisterPage",
+  computed: {
+    image() {
+      return this.$store.state.apod.hdurl;
+    },
+  },
+  created() {
+    this.$store.dispatch("getAPOD");
+  },
 };
 </script>
 

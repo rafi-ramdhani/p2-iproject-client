@@ -7,6 +7,7 @@ import VueSocketIOExt from 'vue-socket.io-extended';
 import { io } from 'socket.io-client';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+// import ifacebook from "./facebook-init"
 
 const socket = io('http://localhost:3000');
 
@@ -19,5 +20,6 @@ new Vue({
   router,
   store,
   VueSweetalert2,
+  VueSocketIOExt,
   render: h => h(App)
 }).$mount('#app')

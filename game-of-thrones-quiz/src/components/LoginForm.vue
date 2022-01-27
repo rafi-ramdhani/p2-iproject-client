@@ -46,36 +46,31 @@
         >
           Sign In
         </button>
+        <p class="my-3">
+          Don't have an account?
+          <span
+            @click.prevent="toSignUp"
+            class="hover:text-blue-600 cursor-pointer font-semibold"
+            >Sign Up</span
+          >
+        </p>
+        <v-facebook-login
+          app-id="522036259339153"
+          @sdk-init="handleLogin"
+          class="mt-3"
+        ></v-facebook-login>
       </form>
-      <button
-        class="
-          w-10/12
-          h-12
-          mt-1
-          mb-5
-          rounded-lg
-          opacity-90
-          hover:opacity-100
-          font-semibold
-        "
-        style="background-color: #a13333"
-      >
-        Facebook Sign In
-      </button>
-      <p>
-        Don't have an account?
-        <span
-          @click.prevent="toSignUp"
-          class="hover:text-blue-600 cursor-pointer font-semibold"
-          >Sign Up</span
-        >
-      </p>
     </div>
   </div>
 </template>
 
 <script>
+import VFacebookLogin from "vue-facebook-login-component";
+
 export default {
+  components: {
+    VFacebookLogin,
+  },
   name: "LoginForm",
   data() {
     return {
@@ -84,6 +79,9 @@ export default {
     };
   },
   methods: {
+    handleLogin(response) {
+      console.log(response.FB.getAuthResponse);
+    },
     toSignUp() {
       this.$router
         .push({
